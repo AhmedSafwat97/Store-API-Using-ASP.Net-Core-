@@ -12,6 +12,8 @@ namespace Talabat.Repository
 {
 
     // i do not want to create object from this class
+    // to have the functions That create the Spec
+
     internal static class SpacificationsEvaluator<T> where T : BaseEntity
     {
 
@@ -24,6 +26,7 @@ namespace Talabat.Repository
             Query = BaseQuery.Where(Spec.Criteria); //DbContext.Set<>(
 
            /// To _dbContext.Set<Product>() + .Where(P => P.Id == Id) + .Include(P => P.Brand)
+           /// Aggregate fun take the Query that i want to add to it The includes functions
                                                 
             Query = Spec.Includes.Aggregate(Query, (CurrentQuery, IncludeExprition) => CurrentQuery.Include(IncludeExprition));
 

@@ -8,18 +8,22 @@ using Talabat.Core.Enities;
 
 namespace Talabat.Core.Spacifications
 {
+
+    // we make this Class To Have the commone codee and to be inherited by the Child Classes
+    // and to give the ineshial value in the constractor to chain on it from the child Class
     public class BaseSpacification<T> : ISpacification<T> where T : BaseEntity  // BaseEntity => The Parant Class For All Entites
     {
         public Expression<Func<T, bool>> Criteria { get; set; } = null;
 
         public List<Expression<Func<T, object>>> Includes { get; set; } = new List<Expression<Func<T, object>>>();
 
-
+        // we have to chain to this constractor from the child class to set the includes values
         public BaseSpacification()
         {
+
         }
 
-
+        // we have to chain to this constractor from the child class to set the Criteria (Where Condition) values
         public BaseSpacification(Expression<Func<T, bool>> CriteriaEx)
         {
             Criteria = CriteriaEx;
@@ -29,6 +33,7 @@ namespace Talabat.Core.Spacifications
         // we call the methods of the
         // spacifications in the Repostory Project in Class
         // that Named SpacificationsEvaluator
+
 
     }
 }

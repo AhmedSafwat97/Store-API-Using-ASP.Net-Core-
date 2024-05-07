@@ -1,5 +1,6 @@
 
 using Microsoft.EntityFrameworkCore;
+using Talabat.API.Helper;
 using Talabat.Core.IReposities;
 using Talabat.Repository;
 using Talabat.Repository.Data;
@@ -36,6 +37,14 @@ namespace Talabat.API
             // to allow the dependancy injection for the genaricrepo 
             // tell the clr to create object from genaricRepo Class That implement IGenaricRepo
             builder.Services.AddScoped(typeof(IGenaricRepository<>), typeof(GenaricRepository<>));
+
+
+            // to add The Mapping Profile
+            // to allow dependancy injection to the auto mapper
+            builder.Services.AddAutoMapper(M => M.AddProfile(new MappingProfile()));
+            // another way to nake injection for the automapper
+            //builder.Services.AddAutoMapper(typeof(MappingProfile);
+
 
             #endregion
 

@@ -23,7 +23,7 @@ namespace Talabat.Core.IReposities
         Task<IEnumerable<T>> GetAllWithSpecAsync(ISpacification<T> Spec);
 
         // for using Specification design pattern
-        Task<T?> GetAsyncWithSpec(ISpacification<T> Spec);
+        Task<T?> GetByIDWithSpecAsync(ISpacification<T> Spec);
 
 
     }

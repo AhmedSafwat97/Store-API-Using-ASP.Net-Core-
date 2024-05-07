@@ -19,7 +19,7 @@ namespace Talabat.Repository
          
         // to create object from The Db Context Class That in the Data Folder Emplicitly
         // Dependancy injection
-        GenaricRepository(StoreContext DbContext )
+       public GenaricRepository(StoreContext DbContext)
         {
             _dbContext = DbContext;
         }
@@ -51,7 +51,7 @@ namespace Talabat.Repository
 
 
         // For specification Methods (to include the Navigation Property)
-        public async Task<T?> GetAsyncWithSpec(ISpacification<T> Spec)
+        public async Task<T?> GetByIDWithSpecAsync(ISpacification<T> Spec)
         {
             return await ApplyQuery(Spec).FirstOrDefaultAsync();
 
