@@ -64,12 +64,12 @@ namespace Talabat.API.Controllers
             // The Property of the file Imahe
             var file = NewProduct.Picture;
 
-            // Use Static Mehod from Static class
-
-            var MappingProduct = _mapper.Map<AddProductDto, Product>(NewProduct);
+            // Mapping the Dto to Product Entities
+            Product? MappingProduct = _mapper.Map<AddProductDto, Product>(NewProduct);
             if (MappingProduct is null)
                 return NotFound();
 
+            // Add The Image Using the Static Member Method Class
             var Path = DocumentSettings.UploadFile(file, "Images");
 
             MappingProduct.PictureUrl = Path;
