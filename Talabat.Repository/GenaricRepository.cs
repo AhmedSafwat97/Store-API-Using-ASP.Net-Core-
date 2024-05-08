@@ -31,7 +31,7 @@ namespace Talabat.Repository
         }
 
 
-        public async Task<T?> GetAsync(int Id)
+        public async Task<T?> GetByIdAsync(int Id)
         {
             ///if(typeof(T) == typeof(Product))
             ///return await _dbContext.Set<Product>().Where(P => P.Id == Id)
@@ -63,8 +63,18 @@ namespace Talabat.Repository
             return SpacificationsEvaluator<T>.GetQuery(_dbContext.Set<T>(), Spec);
         }
 
+        public async Task DeleteAsync(T Entity)
+        {
+            _dbContext.Set<T>().Remove(Entity);
+            await _dbContext.SaveChangesAsync();
 
+        }
 
+        public async Task AddAsync(T Entity)
+        {
+            _dbContext.Set<T>().Add(Entity);
+            await _dbContext.SaveChangesAsync();
+        }
     }
 
 }

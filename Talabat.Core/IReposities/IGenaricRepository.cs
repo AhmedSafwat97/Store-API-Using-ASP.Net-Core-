@@ -13,7 +13,15 @@ namespace Talabat.Core.IReposities
     public interface IGenaricRepository<T> where T : BaseEntity
     {
         // get By Id 
-        Task<T?> GetAsync(int Id);
+        Task<T?> GetByIdAsync(int Id);
+
+        //Delete
+        Task DeleteAsync(T Entity);
+
+
+        //Add
+        Task AddAsync(T Entity);
+
 
         // Get All 
         Task<IEnumerable<T>> GetAllAsync();
