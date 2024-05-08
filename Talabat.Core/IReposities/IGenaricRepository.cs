@@ -18,10 +18,11 @@ namespace Talabat.Core.IReposities
         //Delete
         Task DeleteAsync(T Entity);
 
-
         //Add
         Task AddAsync(T Entity);
 
+        //Update
+        Task UpdateAsync(T Entity);
 
         // Get All 
         Task<IEnumerable<T>> GetAllAsync();

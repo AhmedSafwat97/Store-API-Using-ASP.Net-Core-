@@ -75,6 +75,13 @@ namespace Talabat.Repository
             _dbContext.Set<T>().Add(Entity);
             await _dbContext.SaveChangesAsync();
         }
+
+        public async Task UpdateAsync(T Entity)
+        {
+            _dbContext.Set<T>().Update(Entity);
+            await _dbContext.SaveChangesAsync();
+
+        }
     }
 
 }

@@ -56,6 +56,35 @@ namespace Talabat.API.Controllers
         }
 
 
+        // Update Products By ID
+        [HttpPut("{Id}")] //Get /Api/Product
+        public async Task<ActionResult<AddProductDto>> UpdateProductById(int Id , AddProductDto UpdatedProduct)
+        {
+            // Find the Product with Id
+            Product? existingProduct = await _productsRepo.GetByIdAsync(Id);
+            if (existingProduct is null)
+                return NotFound();
+
+            var UpdatedFile = UpdatedProduct.Picture;
+            var OrignalFileName = existingProduct.PictureUrl;
+
+           var UpdatedUrl = DocumentSettings.UpdateFile(UpdatedFile , OrignalFileName , "Images" );
+
+            // Map the Update Product to the existing Product
+            Product? ProductUpdate = _mapper.Map(UpdatedProduct , existingProduct);
+
+            ProductUpdate.PictureUrl = UpdatedUrl;
+
+            if (ProductUpdate is null)
+                return NotFound();
+
+            await _productsRepo.UpdateAsync(ProductUpdate);
+
+            // to return the Mapping Product Dto
+            return Ok("Product Updated Successfully");
+        }
+
+
         // Add Product 
         [HttpPost] //Get /Api/Product
         public async Task<ActionResult<AddProductDto>> AddProduct(AddProductDto NewProduct)
@@ -69,6 +98,7 @@ namespace Talabat.API.Controllers
             if (MappingProduct is null)
                 return NotFound();
 
+            // If MappingProduct Is Not Null :
             // Add The Image Using the Static Member Method Class
             var Path = DocumentSettings.UploadFile(file, "Images");
 
@@ -102,6 +132,7 @@ namespace Talabat.API.Controllers
             // to return the Mapping Product Dto
             return Ok("The Product Deleted Successfully");
         }
+
 
 
     }

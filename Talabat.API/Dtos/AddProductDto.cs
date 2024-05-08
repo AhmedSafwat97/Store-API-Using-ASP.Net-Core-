@@ -4,7 +4,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Talabat.API.Dtos
 {
     public class AddProductDto
-    {
+    {   
+
         public string Name { get; set; }
 
         public string Description { get; set; }
