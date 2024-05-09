@@ -6,18 +6,12 @@
         // We Ust The ProductPictureUrlResolver Ro Map The Images Url to be the Full Url 
         // Base Url + Folder Name + Image Name
 
-        private static String GetBasPath()
-        {
-            return "wwwroot";
-        }
-
-
         public static string UploadFile(IFormFile File , string FolderName)
         {
             //folder Path = Directory + FileFolderPath + FileName
             // we use GetCurrentDirectory To Get The Current Directory of the folder
             string FolderPath = Path.Combine(Directory.GetCurrentDirectory()
-                                             , GetBasPath() , FolderName);
+                                             , "wwwroot", FolderName);
 
             // Make the File Name Uniqe
             string FileName = $"{Guid.NewGuid()}{File.FileName}";
@@ -30,8 +24,7 @@
 
              File.CopyTo(FileStream);
 
-            // We Return the file name That we want to Save it in the Database
-
+            // We Return the file name That we want to Save it in the Databas
             string PicUrl = $"{FolderName}/{FileName}";
 
             return PicUrl;
@@ -48,13 +41,9 @@
 
 
         public static void DeleteFile(String FileName ) {
-        
-
-            string FilePath = Path.Combine(Directory.GetCurrentDirectory(), GetBasPath() ,FileName);
+            string FilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", FileName);
             if (File.Exists(FilePath))
                 File.Delete(FilePath);
-
-
         }
 
     }

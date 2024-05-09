@@ -1,12 +1,14 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Talabat.API.ApiResponse;
 using Talabat.API.Dtos;
 using Talabat.API.Helper;
 using Talabat.Core.Enities;
 using Talabat.Core.IReposities;
 using Talabat.Core.ProductSpec;
 using Talabat.Repository;
+
 
 namespace Talabat.API.Controllers
 {
@@ -33,7 +35,7 @@ namespace Talabat.API.Controllers
             var Products = await _productsRepo.GetAllWithSpecAsync(Spec);
 
             if (Products is null)
-                return NotFound();
+                return NotFound(new ObjResponse(401, "Products Fetching Error"));
 
             return Ok(_mapper.Map<IEnumerable<Product>, IEnumerable<ProductDto>>(Products));
         }
@@ -49,7 +51,7 @@ namespace Talabat.API.Controllers
             var Product = await _productsRepo.GetByIDWithSpecAsync(Spec);
 
             if (Product is null)
-                return NotFound();
+                return NotFound(new ObjResponse(401, "Product Not Found"));
 
             // to return the Mapping Product Dto
             return Ok(_mapper.Map<Product, ProductDto>(Product));
@@ -63,7 +65,7 @@ namespace Talabat.API.Controllers
             // Find the Product with Id
             Product? existingProduct = await _productsRepo.GetByIdAsync(Id);
             if (existingProduct is null)
-                return NotFound("This Product May be Deleted");
+                return NotFound(new ObjResponse(401, "This Product May be Deleted"));
 
             var UpdatedFile = UpdatedProduct.Picture;
             var OrignalFileName = existingProduct.PictureUrl;
@@ -76,12 +78,12 @@ namespace Talabat.API.Controllers
             ProductUpdate.PictureUrl = UpdatedUrl;
 
             if (ProductUpdate is null)
-                return NotFound("Error in Updating this product");
+                return NotFound(new ObjResponse(401 , "Product Update Error"));
 
             await _productsRepo.UpdateAsync(ProductUpdate);
 
             // to return the Mapping Product Dto
-            return Ok("Product Updated Successfully");
+            return Ok(new ObjResponse(200,"Product Updated Successfully"));
         }
 
 
@@ -96,7 +98,7 @@ namespace Talabat.API.Controllers
             // Mapping the Dto to Product Entities
             Product? MappingProduct = _mapper.Map<AddProductDto, Product>(NewProduct);
             if (MappingProduct is null)
-                return NotFound();
+                return NotFound(new ObjResponse(401, "Error in Adding Product"));
 
             // If MappingProduct Is Not Null :
             // Add The Image Using the Static Member Method Class
@@ -107,7 +109,7 @@ namespace Talabat.API.Controllers
             await _productsRepo.AddAsync(MappingProduct);
 
             // to return the Mapping Product Dto
-            return Ok("The Product Added Successfully");
+            return Ok(new ObjResponse(200, "The Product Added Successfully"));
         }
 
 
@@ -118,7 +120,7 @@ namespace Talabat.API.Controllers
             // Find the product that we want to delete With Id 
             Product? Product = await _productsRepo.GetByIdAsync(Id);
 
-            if (Product is null) return NotFound();
+            if (Product is null) return NotFound(new ObjResponse(401, "THis Product Not Found"));
             
             // Get the File Name
             string FileName = Product.PictureUrl;
@@ -129,9 +131,8 @@ namespace Talabat.API.Controllers
             // Delete Product
             await _productsRepo.DeleteAsync(Product);
 
-
             // to return the Mapping Product Dto
-            return Ok("The Product Deleted Successfully");
+            return Ok(new ObjResponse(200, "The Product Deleted Successfully"));
         }
 
 
