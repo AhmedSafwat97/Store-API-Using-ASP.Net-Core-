@@ -63,12 +63,12 @@ namespace Talabat.API.Controllers
             // Find the Product with Id
             Product? existingProduct = await _productsRepo.GetByIdAsync(Id);
             if (existingProduct is null)
-                return NotFound();
+                return NotFound("This Product May be Deleted");
 
             var UpdatedFile = UpdatedProduct.Picture;
             var OrignalFileName = existingProduct.PictureUrl;
 
-           var UpdatedUrl = DocumentSettings.UpdateFile(UpdatedFile , OrignalFileName , "Images" );
+           var UpdatedUrl = DocumentSettings.UpdateFile(UpdatedFile , OrignalFileName , "Imgs" );
 
             // Map the Update Product to the existing Product
             Product? ProductUpdate = _mapper.Map(UpdatedProduct , existingProduct);
@@ -76,7 +76,7 @@ namespace Talabat.API.Controllers
             ProductUpdate.PictureUrl = UpdatedUrl;
 
             if (ProductUpdate is null)
-                return NotFound();
+                return NotFound("Error in Updating this product");
 
             await _productsRepo.UpdateAsync(ProductUpdate);
 
@@ -100,7 +100,7 @@ namespace Talabat.API.Controllers
 
             // If MappingProduct Is Not Null :
             // Add The Image Using the Static Member Method Class
-            var Path = DocumentSettings.UploadFile(file, "Images");
+            var Path = DocumentSettings.UploadFile(file, "Imgs");
 
             MappingProduct.PictureUrl = Path;
 
@@ -111,7 +111,7 @@ namespace Talabat.API.Controllers
         }
 
 
-        // Delete Product 
+        // Delete Product By Id
         [HttpDelete("{Id}")] //Get /Api/Product
         public async Task<ActionResult<AddProductDto>> DeletProduct(int Id)
         {
@@ -123,11 +123,12 @@ namespace Talabat.API.Controllers
             // Get the File Name
             string FileName = Product.PictureUrl;
 
+            // Delete The Image form the WWRoot
+            DocumentSettings.DeleteFile(FileName);
+
             // Delete Product
             await _productsRepo.DeleteAsync(Product);
 
-            // Delete The Image form the WWRoot
-            DocumentSettings.DeleteFile(FileName, "Images");
 
             // to return the Mapping Product Dto
             return Ok("The Product Deleted Successfully");
