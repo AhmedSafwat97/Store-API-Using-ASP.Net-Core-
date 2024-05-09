@@ -55,7 +55,7 @@ namespace Talabat.API
             // to add The Mapping Profile
             // to allow dependancy injection to the auto mapper
             //builder.Services.AddAutoMapper(M => M.AddProfile(new MappingProfile()));
-            // another way to nake injection for the automapper
+            // another way to nake injection for the automapper and this the best way
             builder.Services.AddAutoMapper(typeof(MappingProfile));
 
 

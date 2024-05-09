@@ -19,6 +19,7 @@ namespace Talabat.API.Helper
         public string Resolve(Product source, ProductDto destination, string destMember, ResolutionContext context)
         {
             if (!string.IsNullOrEmpty(source.PictureUrl))
+                // The Api Base Url Is in The AppSetting 
                 return $"{_configration["ApIBaseURl"]}/{source.PictureUrl}";
 
             return string.Empty;

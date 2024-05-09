@@ -2,7 +2,9 @@
 {
     public static class DocumentSettings
     {
-
+        //Note :
+        // We Ust The ProductPictureUrlResolver Ro Map The Images Url to be the Full Url 
+        // Base Url + Folder Name + Image Name
 
         private static String GetBasPath()
         {
@@ -13,6 +15,7 @@
         public static string UploadFile(IFormFile File , string FolderName)
         {
             //folder Path = Directory + FileFolderPath + FileName
+            // we use GetCurrentDirectory To Get The Current Directory of the folder
             string FolderPath = Path.Combine(Directory.GetCurrentDirectory()
                                              , GetBasPath() , FolderName);
 
