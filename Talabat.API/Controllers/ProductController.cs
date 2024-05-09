@@ -17,12 +17,21 @@ namespace Talabat.API.Controllers
     {
         private readonly IGenaricRepository<Product> _productsRepo;
         private readonly IMapper _mapper;
+        private readonly IGenaricRepository<ProductBrand> _BrandRepo;
+        private readonly IGenaricRepository<ProductCategory> _CategoryRepo;
 
         // to ust Automapper we inject The class That implement Imapper 
-        public ProductController(IGenaricRepository<Product> ProductsRepo, IMapper Mapper)
+        public ProductController(
+            IGenaricRepository<Product> ProductsRepo, 
+            IGenaricRepository<ProductBrand> Brand,
+            IGenaricRepository<ProductCategory> Category ,
+            IMapper Mapper
+            )
         {
             _productsRepo = ProductsRepo;
             _mapper = Mapper;
+            _BrandRepo = Brand;
+            _CategoryRepo = Category;
         }
 
         // Get All Products
@@ -114,7 +123,7 @@ namespace Talabat.API.Controllers
 
 
         // Delete Product By Id
-        [HttpDelete("{Id}")] //Get /Api/Product
+        [HttpDelete("{Id}")] //Delete /Api/Product
         public async Task<ActionResult<AddProductDto>> DeletProduct(int Id)
         {
             // Find the product that we want to delete With Id 
@@ -135,6 +144,24 @@ namespace Talabat.API.Controllers
             return Ok(new ObjResponse(200, "The Product Deleted Successfully"));
         }
 
+
+        //For Brands And Categories
+
+        [HttpGet("Brands")] //Get /Api/Product/Brands
+        public async Task<ActionResult<IEnumerable<ProductBrand>>> GetAllBrands()
+        {
+            var Brands = await _BrandRepo.GetAllAsync();
+            return Ok(Brands);
+
+        }
+
+        [HttpGet("Categories")] //Get /Api/Product/Categories
+        public async Task<ActionResult<IEnumerable<ProductCategory>>> GetAllCategories()
+        {
+            var Categories = await _CategoryRepo.GetAllAsync();
+            return Ok(Categories);
+
+        }
 
 
     }
