@@ -20,6 +20,12 @@ namespace Talabat.Core.Spacifications
         // The Method (Delegate (Lamda Expretion0) that used in Include
         public List<Expression<Func<T, object>>> Includes { get; set; }
 
+        // The Method (Delegate (Lamda Expretion0) that used in OrderBy
+        public Expression<Func<T, object>> OrderBy { get; set; }
+
+        // The Method (Delegate (Lamda Expretion0) that used in OrderByDesc
+        public Expression<Func<T, object>> OrderByDesc { get; set; }
+
 
     }
 }

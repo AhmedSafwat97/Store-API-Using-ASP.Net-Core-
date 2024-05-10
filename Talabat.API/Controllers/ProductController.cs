@@ -35,11 +35,14 @@ namespace Talabat.API.Controllers
         }
 
         // Get All Products
-        [HttpGet] //Get /Api/Product
-        public async Task<ActionResult<IEnumerable<ProductDto>>> GetAllProducts()
+        [HttpGet] //Get /Api/Product 
+                  //Sort By Price Asc Get /Api/Product?sort=PriceAsc
+                  //Sort By Price Desc Get /Api/Product?sort=PriceDesc
+                  //Sort By Name Get /Api/Product?sort=Name
+        public async Task<ActionResult<IEnumerable<ProductDto>>> GetAllProducts(string sort)
         {
             // we make object Of the ProductWithBrandandCategory with  the parameter less constractor
-            var Spec = new ProductWithBrandandCategory();
+            var Spec = new ProductWithBrandandCategory(sort);
 
             var Products = await _productsRepo.GetAllWithSpecAsync(Spec);
 
@@ -154,6 +157,7 @@ namespace Talabat.API.Controllers
             return Ok(Brands);
 
         }
+
 
         [HttpGet("Categories")] //Get /Api/Product/Categories
         public async Task<ActionResult<IEnumerable<ProductCategory>>> GetAllCategories()

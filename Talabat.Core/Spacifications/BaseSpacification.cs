@@ -13,9 +13,19 @@ namespace Talabat.Core.Spacifications
     // and to give the ineshial value in the constractor to chain on it from the child Class
     public class BaseSpacification<T> : ISpacification<T> where T : BaseEntity  // BaseEntity => The Parant Class For All Entites
     {
+
+        // Where codition
         public Expression<Func<T, bool>> Criteria { get; set; } = null;
 
+        // Includes Conditons
         public List<Expression<Func<T, object>>> Includes { get; set; } = new List<Expression<Func<T, object>>>();
+
+        // OrderBy Conditon
+        public Expression<Func<T, object>> OrderBy { get; set; } = null;
+
+        // OrderbyDesc
+        public Expression<Func<T, object>> OrderByDesc { get; set; } = null;
+
 
         // we have to chain to this constractor from the child class to set the includes values
         public BaseSpacification()

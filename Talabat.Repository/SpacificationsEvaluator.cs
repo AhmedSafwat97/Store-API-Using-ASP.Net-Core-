@@ -16,18 +16,24 @@ namespace Talabat.Repository
 
     internal static class SpacificationsEvaluator<T> where T : BaseEntity
     {
-
+        // Spec => ISpacification is sending from the controller As Object of class That Implement I Spacification
         // Query => this the DbSet
         public static IQueryable<T> GetQuery (IQueryable<T> BaseQuery , ISpacification<T> Spec) {
 
            var Query = BaseQuery;
 
             if (Spec.Criteria is not null)
-            Query = BaseQuery.Where(Spec.Criteria); //DbContext.Set<>(
+            Query = BaseQuery.Where(Spec.Criteria); //DbContext.Set<>().where(P= => P.Id)
 
-           /// To _dbContext.Set<Product>() + .Where(P => P.Id == Id) + .Include(P => P.Brand)
-           /// Aggregate fun take the Query that i want to add to it The includes functions
-                                                
+            if (Spec.OrderBy != null)
+            Query = Query.OrderBy(Spec.OrderBy); //DbContext.Set<>().where(P= => P.Id).OrderBy(P => P.Price)
+
+            if (Spec.OrderByDesc != null)
+                Query = Query.OrderByDescending(Spec.OrderByDesc); //DbContext.Set<>().where(P= => P.Id).OrderByDescending(P => P.Price)
+
+            /// To _dbContext.Set<Product>() + .Where(P => P.Id == Id) + .Include(P => P.Brand)
+            /// Aggregate fun take the Query that i want to add to it The includes functions
+
             Query = Spec.Includes.Aggregate(Query, (CurrentQuery, IncludeExprition) => CurrentQuery.Include(IncludeExprition));
 
 

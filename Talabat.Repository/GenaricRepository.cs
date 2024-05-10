@@ -63,6 +63,10 @@ namespace Talabat.Repository
             return SpacificationsEvaluator<T>.GetQuery(_dbContext.Set<T>(), Spec);
         }
 
+
+
+        // For Add And Update And Delete
+
         public async Task DeleteAsync(T Entity)
         {
             _dbContext.Set<T>().Remove(Entity);
