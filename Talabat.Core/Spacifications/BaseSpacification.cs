@@ -28,6 +28,7 @@ namespace Talabat.Core.Spacifications
 
 
         // we have to chain to this constractor from the child class to set the includes values
+        // and set the Criteria (Where Codition = Nul)
         public BaseSpacification()
         {
 

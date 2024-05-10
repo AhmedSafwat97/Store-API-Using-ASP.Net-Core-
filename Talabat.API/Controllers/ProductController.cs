@@ -36,13 +36,15 @@ namespace Talabat.API.Controllers
 
         // Get All Products
         [HttpGet] //Get /Api/Product 
-                  //Sort By Price Asc Get /Api/Product?sort=PriceAsc
-                  //Sort By Price Desc Get /Api/Product?sort=PriceDesc
-                  //Sort By Name Get /Api/Product?sort=Name
-        public async Task<ActionResult<IEnumerable<ProductDto>>> GetAllProducts(string sort)
+        //Sort By Price Asc Get /Api/Product?sort=PriceAsc
+        //Sort By Price Desc Get /Api/Product?sort=PriceDesc
+        //Sort By Name Get /Api/Product?sort=Name
+        // Note : The Default Sorting is By Name
+        // Dynamic Filtering with Category Or Brand Or both Get /Api/Product?brand=1&&Category=2
+        public async Task<ActionResult<IEnumerable<ProductDto>>> GetAllProducts(string? sort , int? brand , int? Category)
         {
             // we make object Of the ProductWithBrandandCategory with  the parameter less constractor
-            var Spec = new ProductWithBrandandCategory(sort);
+            var Spec = new ProductWithBrandandCategory(sort , brand , Category);
 
             var Products = await _productsRepo.GetAllWithSpecAsync(Spec);
 

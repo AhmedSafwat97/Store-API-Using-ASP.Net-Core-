@@ -15,7 +15,17 @@ namespace Talabat.Core.ProductSpec
 
         // this constractor is used to give the Value to the
         // include and make the criteria to be null
-        public ProductWithBrandandCategory(string Sort):base()
+        public ProductWithBrandandCategory(string? Sort , int? brand, int? Category) :base(
+
+                // For Filter By Brand Or Category 
+                // or Filter By Brand and Category 
+                // if brand Comes with value => !brand.HasValue = False
+                // if brand Comes without value => !brand.HasValue = True
+                // if False => P.BrandId == brand 
+                // if True => Not Apply the Conodition 
+                P => (!brand.HasValue || P.BrandId == brand) && 
+                     (!Category.HasValue || P.CategoryId == Category)
+            )
         {
             //for The Include
             Includes.Add(P => P.Brand);
