@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Talabat.Core.Enities;
 using Talabat.Core.Spacifications;
+using Talabat.Core.Spacifications.EntityParams;
 
 namespace Talabat.Core.ProductSpec
 {
@@ -15,7 +16,7 @@ namespace Talabat.Core.ProductSpec
 
         // this constractor is used to give the Value to the
         // include and make the criteria to be null
-        public ProductWithBrandandCategory(string? Sort , int? brand, int? Category) :base(
+        public ProductWithBrandandCategory(ProductParams ProductParam) :base(
 
                 // For Filter By Brand Or Category 
                 // or Filter By Brand and Category 
@@ -23,19 +24,21 @@ namespace Talabat.Core.ProductSpec
                 // if brand Comes without value => !brand.HasValue = True
                 // if False => P.BrandId == brand 
                 // if True => Not Apply the Conodition 
-                P => (!brand.HasValue || P.BrandId == brand) && 
-                     (!Category.HasValue || P.CategoryId == Category)
+                P => (!ProductParam.brandId.HasValue || P.BrandId == ProductParam.brandId) && 
+                     (!ProductParam.CategoryId.HasValue || P.CategoryId == ProductParam.CategoryId)
             )
         {
+
             //for The Include
             Includes.Add(P => P.Brand);
             Includes.Add(P => P.Category);
 
             // For Sorting
             // The Condition That if the Sort is Send With Value
-            if (!string.IsNullOrEmpty(Sort))
+            if (!string.IsNullOrEmpty(ProductParam.sort))
             {
-                 switch  (Sort) {
+
+                 switch  (ProductParam.sort) {
                     case "PriceAsc":
                         // Set the Value to the property
                         OrderBy = P => P.Price;
@@ -48,11 +51,21 @@ namespace Talabat.Core.ProductSpec
                         break;
 
                 }
-
-
-
             }
             else OrderBy = P => P.Name;
+
+
+
+            //Example 
+            // We Have 100 Product in the database
+            // The PageSizeLimit  Is 20 Product Per Page
+            // The Page Count is !00 / 20 = 5 pages
+
+            // i want to get the page Number 3 
+            // then Skip = PageSize(20) * PageNumber(3) - 1 = 40  => Skip = 40
+
+            ApplyPagination(ProductParam.PageSize * (ProductParam.PageIndex - 1), ProductParam.PageSize);
+
 
         }
 
@@ -63,6 +76,9 @@ namespace Talabat.Core.ProductSpec
             Includes.Add(P => P.Brand);
             Includes.Add(P => P.Category);
         }
+
+        
+
 
 
     }

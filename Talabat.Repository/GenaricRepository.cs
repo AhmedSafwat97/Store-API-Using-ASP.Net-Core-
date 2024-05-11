@@ -57,14 +57,6 @@ namespace Talabat.Repository
 
         }
 
-        // we make helper method to have the common Code
-        private IQueryable<T> ApplyQuery(ISpacification<T>  Spec)
-        {
-            return SpacificationsEvaluator<T>.GetQuery(_dbContext.Set<T>(), Spec);
-        }
-
-
-
         // For Add And Update And Delete
 
         public async Task DeleteAsync(T Entity)
@@ -86,6 +78,26 @@ namespace Talabat.Repository
             await _dbContext.SaveChangesAsync();
 
         }
+
+
+        //public async Task<T?> GetPaginationCountAsync(ISpacification<T> Spec)
+        //{
+        //    return await ApplyQuery(Spec).CountAsync();
+        //}
+
+        async Task<int> IGenaricRepository<T>.GetPaginationCountAsync(ISpacification<T> Spec)
+        {
+            return await ApplyQuery(Spec).CountAsync();
+        }
+
+
+        // we make helper method to have the common Code
+        private IQueryable<T> ApplyQuery(ISpacification<T> Spec)
+        {
+            return SpacificationsEvaluator<T>.GetQuery(_dbContext.Set<T>(), Spec);
+        }
+
+
     }
 
 }

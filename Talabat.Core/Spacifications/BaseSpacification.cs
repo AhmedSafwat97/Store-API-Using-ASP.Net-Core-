@@ -26,6 +26,16 @@ namespace Talabat.Core.Spacifications
         // OrderbyDesc
         public Expression<Func<T, object>> OrderByDesc { get; set; } = null;
 
+        // Page Size For Pagination
+        public int Skip { get; set; }
+
+        // Page Index For Pagination
+        public int Take { get; set; }
+
+
+        // To check If the Pagination Is Enable or Not
+        public bool IsPagination { get; set; }
+
 
         // we have to chain to this constractor from the child class to set the includes values
         // and set the Criteria (Where Codition = Nul)
@@ -38,6 +48,14 @@ namespace Talabat.Core.Spacifications
         public BaseSpacification(Expression<Func<T, bool>> CriteriaEx)
         {
             Criteria = CriteriaEx;
+        }
+
+        // For Pagination
+        public void ApplyPagination(int skip, int take)
+        {
+            IsPagination = true;
+            Skip = skip;
+            Take = take;
         }
 
 

@@ -22,17 +22,27 @@ namespace Talabat.Repository
 
            var Query = BaseQuery;
 
+            //Where Condition
             if (Spec.Criteria is not null)
             Query = BaseQuery.Where(Spec.Criteria); //DbContext.Set<>().where(P= => P.Id)
 
+            // Order By
             if (Spec.OrderBy != null)
             Query = Query.OrderBy(Spec.OrderBy); //DbContext.Set<>().where(P= => P.Id).OrderBy(P => P.Price)
 
             if (Spec.OrderByDesc != null)
                 Query = Query.OrderByDescending(Spec.OrderByDesc); //DbContext.Set<>().where(P= => P.Id).OrderByDescending(P => P.Price)
 
+
+            // If Pagination Enable 
+            if (Spec.IsPagination)
+            {
+                Query = Query.Skip(Spec.Skip).Take(Spec.Take);
+            }
+
             /// To _dbContext.Set<Product>() + .Where(P => P.Id == Id) + .Include(P => P.Brand)
             /// Aggregate fun take the Query that i want to add to it The includes functions
+
 
             Query = Spec.Includes.Aggregate(Query, (CurrentQuery, IncludeExprition) => CurrentQuery.Include(IncludeExprition));
 

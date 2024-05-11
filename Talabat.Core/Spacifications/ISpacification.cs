@@ -26,6 +26,21 @@ namespace Talabat.Core.Spacifications
         // The Method (Delegate (Lamda Expretion0) that used in OrderByDesc
         public Expression<Func<T, object>> OrderByDesc { get; set; }
 
+        // Page Size For Pagination
+        public int Skip { get; set; }
+
+        // Page Index For Pagination
+        public int Take { get; set; }
+
+
+        // To check If the Pagination Is Enable or Not
+        public bool IsPagination { get; set; }
+
+
+
+        // Fpr Pagination
+        public void ApplyPagination(int Skip, int Take);
+
 
     }
 }

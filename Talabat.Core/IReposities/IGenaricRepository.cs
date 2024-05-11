@@ -35,5 +35,9 @@ namespace Talabat.Core.IReposities
         Task<T?> GetByIDWithSpecAsync(ISpacification<T> Spec);
 
 
+        // For Pagination Count 
+        Task<int> GetPaginationCountAsync(ISpacification<T> Spec);
+
+
     }
 }

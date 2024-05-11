@@ -7,6 +7,7 @@ using Talabat.API.Helper;
 using Talabat.Core.Enities;
 using Talabat.Core.IReposities;
 using Talabat.Core.ProductSpec;
+using Talabat.Core.Spacifications.EntityParams;
 using Talabat.Repository;
 
 
@@ -41,17 +42,31 @@ namespace Talabat.API.Controllers
         //Sort By Name Get /Api/Product?sort=Name
         // Note : The Default Sorting is By Name
         // Dynamic Filtering with Category Or Brand Or both Get /Api/Product?brand=1&&Category=2
-        public async Task<ActionResult<IEnumerable<ProductDto>>> GetAllProducts(string? sort , int? brand , int? Category)
+        // Use FromQuery to get the Params From the Query
+        // Note : We Make ProductParams To contains all the Params (Clean Code) 
+        public async Task<ActionResult<IEnumerable<ProductDto>>> GetAllProducts([FromQuery] ProductParams ProductParam)
         {
             // we make object Of the ProductWithBrandandCategory with  the parameter less constractor
-            var Spec = new ProductWithBrandandCategory(sort , brand , Category);
+            var Spec = new ProductWithBrandandCategory(ProductParam);
 
             var Products = await _productsRepo.GetAllWithSpecAsync(Spec);
 
             if (Products is null)
                 return NotFound(new ObjResponse(401, "Products Fetching Error"));
 
-            return Ok(_mapper.Map<IEnumerable<Product>, IEnumerable<ProductDto>>(Products));
+           var ProductsResult = _mapper.Map<IEnumerable<Product>, IEnumerable<ProductDto>>(Products);
+
+            // For Getting PagintionCount using Genaric Class
+            var CountSpec = new PaginationCountResponse<Product>(Spec.Criteria);
+            var Count = await _productsRepo.GetPaginationCountAsync(CountSpec);
+
+            // The Result
+            // The Object Of the Pagination Must be Contains 
+            // PageIndex , PageSizw , Cound , Data
+            return Ok(new PaginationResponse<ProductDto>(ProductParam.PageIndex
+                                                         , ProductParam.PageSize 
+                                                         , Count
+                                                         , ProductsResult));
         }
 
 
