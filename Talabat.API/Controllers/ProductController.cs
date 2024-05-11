@@ -36,10 +36,11 @@ namespace Talabat.API.Controllers
         }
 
         // Get All Products
-        [HttpGet] //Get /Api/Product 
-        //Sort By Price Asc Get /Api/Product?sort=PriceAsc
-        //Sort By Price Desc Get /Api/Product?sort=PriceDesc
-        //Sort By Name Get /Api/Product?sort=Name
+        [HttpGet] //=> Get /Api/Product 
+        //Sort By Price Asc => Get /Api/Product?sort=PriceAsc
+        //Sort By Price Desc => Get /Api/Product?sort=PriceDesc
+        //Sort By Name => Get /Api/Product?sort=Name
+        // Pagination => Get /api/Product?PageSize=3&PageIndex=1
         // Note : The Default Sorting is By Name
         // Dynamic Filtering with Category Or Brand Or both Get /Api/Product?brand=1&&Category=2
         // Use FromQuery to get the Params From the Query
@@ -49,11 +50,13 @@ namespace Talabat.API.Controllers
             // we make object Of the ProductWithBrandandCategory with  the parameter less constractor
             var Spec = new ProductWithBrandandCategory(ProductParam);
 
+            // Get All Product With (Sort and Filter (Optional)) and Pagination
             var Products = await _productsRepo.GetAllWithSpecAsync(Spec);
 
             if (Products is null)
                 return NotFound(new ObjResponse(401, "Products Fetching Error"));
 
+            // Map The Product to Show As product Dto 
            var ProductsResult = _mapper.Map<IEnumerable<Product>, IEnumerable<ProductDto>>(Products);
 
             // For Getting PagintionCount using Genaric Class

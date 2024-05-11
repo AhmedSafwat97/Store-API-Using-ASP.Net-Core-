@@ -24,7 +24,9 @@ namespace Talabat.Core.ProductSpec
                 // if brand Comes without value => !brand.HasValue = True
                 // if False => P.BrandId == brand 
                 // if True => Not Apply the Conodition 
-                P => (!ProductParam.brandId.HasValue || P.BrandId == ProductParam.brandId) && 
+                P => 
+                     (string.IsNullOrEmpty(ProductParam.Search) || P.Name.ToLower().Contains(ProductParam.Search) ) &&
+                     (!ProductParam.brandId.HasValue || P.BrandId == ProductParam.brandId) && 
                      (!ProductParam.CategoryId.HasValue || P.CategoryId == ProductParam.CategoryId)
             )
         {

@@ -14,6 +14,17 @@ namespace Talabat.Core.Spacifications
         // Set the Limit Of the Sequance Per Page
         public const int MaxPageSize = 20;
 
+        //For Search 
+        private string? search ;
+
+        public string? Search
+        {
+            get { return search; }
+            // Set The Search Value to be lower Case
+            set { search = value?.ToLower(); }
+        }
+
+
         // MAke Full Property to Edit the Set Function
         private int pagesize = 10 ;
 
