@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ using Talabat.Repository.Data.Config;
 
 namespace Talabat.Repository.Data
 {
-    public class StoreContext : DbContext
+    public class StoreContext : IdentityDbContext<AppUser> //DbContext
     {
 
 
@@ -30,6 +31,9 @@ namespace Talabat.Repository.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+
+
+            base.OnModelCreating(modelBuilder);
             // To aply all configration that in this Assemply Project
             // Reflection
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());

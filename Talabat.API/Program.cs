@@ -1,15 +1,18 @@
 
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Talabat.API.Helper;
+using Talabat.Core.Enities;
 using Talabat.Core.IReposities;
 using Talabat.Repository;
 using Talabat.Repository.Data;
+using Talabat.Repository.Data.DataSeeding;
 
 namespace Talabat.API
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
 
             //var DbContext = new StoreContext();
@@ -62,7 +65,35 @@ namespace Talabat.API
             #endregion
 
 
+
+            // Register Identity services
+            builder.Services.AddIdentity<AppUser, IdentityRole>()
+                .AddEntityFrameworkStores<StoreContext>();
+
+
             var app = builder.Build();
+
+            #region For Update Dtatabase With The DataSeeding
+            using var scope = app.Services.CreateScope();
+            var services = scope.ServiceProvider;
+            var loggerFactory = services.GetRequiredService<ILoggerFactory>();
+            var logger = loggerFactory.CreateLogger<Program>();
+
+            try
+            {
+                var context = services.GetRequiredService<StoreContext>();
+                await context.Database.MigrateAsync();
+
+                var userManager = services.GetRequiredService<UserManager<AppUser>>();
+                await IdentityUserSeeding.UserSeedAsync(userManager , logger);
+            }
+            catch (Exception ex)
+            {
+                
+                logger.LogError(ex, "An error occurred during migration or seeding the database.");
+            }
+
+            #endregion
 
             // to apply the files request Form WWWRoot 
             app.UseStaticFiles();
